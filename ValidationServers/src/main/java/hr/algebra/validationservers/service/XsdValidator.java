@@ -19,24 +19,39 @@ public class XsdValidator {
     private final Schema schema;
 
     public XsdValidator(ApplicationContext context) throws Exception {
-        File xsd = context.getResource("classpath:xsd/property.xsd").getFile();
+        File xsdFile = context.getResource("classpath:xsd/property.xsd").getFile();
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        schema = factory.newSchema(xsd);
+        schema = factory.newSchema(xsdFile);
     }
 
     public List<String> validate(byte[] xml) {
         List<String> errors = new ArrayList<>();
         try {
             Validator validator = schema.newValidator();
-            validator.setErrorHandler(new ErrorHandler() {
-                public void error(SAXParseException e) { errors.add(e.getMessage()); }
-                public void fatalError(SAXParseException e) { errors.add(e.getMessage()); }
-                public void warning(SAXParseException e) {}
-            });
+            validator.setErrorHandler(new SimpleErrorHandler(errors));
             validator.validate(new StreamSource(new ByteArrayInputStream(xml)));
         } catch (Exception e) {
-            errors.add("Fatal error: " + e.getMessage());
+            errors.add("Error: " + e.getMessage());
         }
         return errors;
+    }
+
+    private static class SimpleErrorHandler implements ErrorHandler {
+        private final List<String> errors;
+
+        public SimpleErrorHandler(List<String> errors) {
+            this.errors = errors;
+        }
+
+        @Override
+        public void warning(SAXParseException exception) {}
+
+        @Override
+        public void error(SAXParseException exception) {
+            errors.add("Invalid XML: " + exception.getMessage());
+        }
+
+        @Override
+        public void fatalError(SAXParseException exception) {}
     }
 }

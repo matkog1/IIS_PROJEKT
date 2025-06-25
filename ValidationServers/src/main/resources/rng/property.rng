@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+    <start>
+        <element name="root">
+            <element name="message"><text/></element>
+            <element name="Source"><text/></element>
+
+            <element name="PropertyAddress">
+                <element name="streetAddress"><text/></element>
+                <element name="city"><text/></element>
+                <element name="state"><text/></element>
+                <element name="zipcode"><text/></element>
+                <element name="neighborhood"><text/></element>
+                <element name="community"><text/></element>
+                <element name="subdivision"><text/></element>
+            </element>
+
+            <element name="zestimate"><data type="int"/></element>
+            <element name="Bedrooms"><data type="int"/></element>
+            <element name="Bathrooms"><data type="int"/></element>
+            <element name="AreaSqft"><data type="int"/></element>
+            <element name="PropertyZPID"><data type="int"/></element>
+            <element name="Price"><data type="int"/></element>
+            <element name="yearBuilt"><data type="int"/></element>
+            <element name="daysOnZillow"><data type="int"/></element>
+            <element name="PropertyZillowURL"><text/></element>
+        </element>
+    </start>
+
+</grammar>
