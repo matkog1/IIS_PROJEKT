@@ -1,7 +1,6 @@
 package hr.algebra.validationservers.controller;
 
 import hr.algebra.validationservers.dto.PropertyDto;
-import hr.algebra.validationservers.model.Property;
 import hr.algebra.validationservers.service.PropertyMapper;
 import hr.algebra.validationservers.service.PropertyMapperDB;
 import hr.algebra.validationservers.service.RngValidator;
@@ -34,7 +33,7 @@ public class XmlController {
 
         try {
             PropertyDto dto = mapper.fromXml(xml);
-            Property saved = dbmapper.save(dto);
+            dbmapper.save(dto);
             return ResponseEntity.ok(Map.of("valid", true, "preview", dto));
         } catch (JAXBException e) {
             return ResponseEntity.internalServerError()
@@ -52,6 +51,7 @@ public class XmlController {
 
         try {
             PropertyDto dto = mapper.fromXml(xml);
+            dbmapper.save(dto);
             return ResponseEntity.ok(Map.of("valid", true, "preview", dto));
         } catch (JAXBException e) {
             return ResponseEntity.internalServerError()
