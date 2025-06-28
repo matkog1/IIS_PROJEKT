@@ -18,7 +18,6 @@ public class RngValidator {
     public List<String> validate(byte[] xmlBytes) {
         List<String> errors = new ArrayList<>();
 
-        // Capture system.err (used by Jing)
         ByteArrayOutputStream errBuffer = new ByteArrayOutputStream();
         System.setErr(new PrintStream(errBuffer));
 

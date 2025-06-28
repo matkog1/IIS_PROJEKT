@@ -1,15 +1,13 @@
 package hr.algebra.validationservers.controller;
 
 import hr.algebra.validationservers.dto.PropertyDto;
-import hr.algebra.validationservers.service.PropertyMapper;
-import hr.algebra.validationservers.service.PropertyMapperDB;
-import hr.algebra.validationservers.service.RngValidator;
-import hr.algebra.validationservers.service.XsdValidator;
+import hr.algebra.validationservers.service.*;
 import jakarta.xml.bind.JAXBException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +18,10 @@ public class XmlController {
 
     private final XsdValidator xsdValidator;
     private final RngValidator rngValidator;
+    private final XsdValidatorPropertyList propertyListValidator;
     private final PropertyMapper mapper;
     private final PropertyMapperDB dbmapper;
+    private final String xmlPath =  "validationservers/src/main/java/hr/algebra/validationservers/generatedXmls/properties.xml";
 
     @PostMapping(value = "/xsd", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<?> validteWtihXsd(@RequestBody byte[] xml) {
@@ -58,4 +58,23 @@ public class XmlController {
                     .body(Map.of("valid", false, "errors", List.of("JAXB error: " + e.getMessage())));
         }
     }
+
+    @GetMapping("propertyListXsd")
+    public ResponseEntity<?> validateSoapXml() {
+        try {
+            File file = new File(xmlPath);
+            List<String> errors = propertyListValidator.validate(file);
+
+            if (errors.isEmpty()) {
+                return ResponseEntity.ok(Map.of("valid", true));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("valid", false, "errors", errors));
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("valid", false, "error", e.getMessage()));
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class XmlMakerFromDb {
 
     private final PropertyRepo repo;
-
+    private final String folderPath =  "validationservers/src/main/java/hr/algebra/validationservers/generatedXmls/properties.xml";
 
     public File generateXml() throws Exception {
         List<Property> properties = repo.findAll();
@@ -26,9 +26,10 @@ public class XmlMakerFromDb {
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-        File file = new File("generated/properties.xml");
+        File file = new File(folderPath);
         file.getParentFile().mkdirs();
         marshaller.marshal(wrapper, file);
+        System.out.println("XML saved to: " + file.getAbsolutePath());
         return file;
 }
 }
