@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<properties>
+    <property>
+        <areaSqft>100</areaSqft>
+        <bathrooms>2</bathrooms>
+        <bedrooms>3</bedrooms>
+        <city>Zagreb</city>
+        <community></community>
+        <daysOnZillow>5</daysOnZillow>
+        <id>1</id>
+        <message>200: Success</message>
+        <neighborhood></neighborhood>
+        <price>250000</price>
+        <propertyZPID>999999</propertyZPID>
+        <propertyZillowURL>http://zillow.com</propertyZillowURL>
+        <source>TestSource</source>
+        <state>HR</state>
+        <streetAddress>Test</streetAddress>
+        <subdivision>TestSub</subdivision>
+        <yearBuilt>1990</yearBuilt>
+        <zestimate>123456</zestimate>
+        <zipcode>10000</zipcode>
+    </property>
+    <property>
+        <areaSqft>100</areaSqft>
+        <bathrooms>2</bathrooms>
+        <bedrooms>6</bedrooms>
+        <city>Samobor</city>
+        <community></community>
+        <daysOnZillow>5</daysOnZillow>
+        <id>2</id>
+        <message>200: Success</message>
+        <neighborhood></neighborhood>
+        <price>250000</price>
+        <propertyZPID>999999</propertyZPID>
+        <propertyZillowURL>http://zillow.com</propertyZillowURL>
+        <source>TestSource</source>
+        <state>HR</state>
+        <streetAddress>Test</streetAddress>
+        <subdivision>TestSub</subdivision>
+        <yearBuilt>1990</yearBuilt>
+        <zestimate>123456</zestimate>
+        <zipcode>10000</zipcode>
+    </property>
+</properties>
