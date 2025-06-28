@@ -1,0 +1,6 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prop="http://algebra.hr/property">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prop:SearchRequest>Zagreb</prop:SearchRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
