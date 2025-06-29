@@ -1,5 +1,6 @@
 package hr.algebra.validationservers.service;
 
+import hr.algebra.validationservers.dto.PropertyListDto;
 import hr.algebra.validationservers.model.Property;
 import hr.algebra.validationservers.repo.PropertyRepo;
 import hr.algebra.validationservers.soap.model.PropertyList;
@@ -19,6 +20,7 @@ public class XmlMakerFromDb {
 
     public File generateXml() throws Exception {
         List<Property> properties = repo.findAll();
+
         PropertyList wrapper = new PropertyList();
         wrapper.setProperties(properties);
 

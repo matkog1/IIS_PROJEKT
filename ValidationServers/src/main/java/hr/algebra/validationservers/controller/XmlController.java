@@ -5,6 +5,7 @@ import hr.algebra.validationservers.service.*;
 import jakarta.xml.bind.JAXBException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -16,12 +17,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class XmlController {
 
+    private final String xmlPath =  "validationservers/src/main/java/hr/algebra/validationservers/generatedXmls/properties.xml";
+
     private final XsdValidator xsdValidator;
     private final RngValidator rngValidator;
     private final XsdValidatorPropertyList propertyListValidator;
     private final PropertyMapper mapper;
     private final PropertyMapperDB dbmapper;
-    private final String xmlPath =  "validationservers/src/main/java/hr/algebra/validationservers/generatedXmls/properties.xml";
+
 
     @PostMapping(value = "/xsd", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<?> validteWtihXsd(@RequestBody byte[] xml) {
