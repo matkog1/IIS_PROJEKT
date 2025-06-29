@@ -27,6 +27,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/xml/xsd").permitAll()
+                        .requestMatchers("/xml/propertyListXsd").permitAll()
+                        .requestMatchers("/xml/rng").permitAll()
+                        .requestMatchers("/soapSearch/**").permitAll()
+                        .requestMatchers("/xmlrpc/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm
