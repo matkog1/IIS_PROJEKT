@@ -11,6 +11,7 @@ public class SOAPSearchResponse {
     @XmlElement(namespace = "http://algebra.hr/property")
     private String result;
 
+
     public SOAPSearchResponse() {}
 
     public SOAPSearchResponse(String result) {

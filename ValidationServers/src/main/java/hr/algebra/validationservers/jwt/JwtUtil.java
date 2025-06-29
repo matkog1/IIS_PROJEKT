@@ -24,64 +24,56 @@ public class JwtUtil {
     @Value("${jwt.refresh-expiration-ms}")
     private long refreshExpirationMs;
 
-    private Key getAccessKey() {
-        return Keys.hmacShaKeyFor(accessSecret.getBytes());
-    }
-
-    private Key getRefreshKey() {
-        return Keys.hmacShaKeyFor(refreshSecret.getBytes());
-    }
-
     public String generateAccessToken(String username) {
-        Date now = new Date();
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + accessExpirationMs))
-                .signWith(getAccessKey(), SignatureAlgorithm.HS256)
-                .compact();
+        return buildToken(username, accessExpirationMs, accessSecret);
     }
 
     public String generateRefreshToken(String username) {
-        Date now = new Date();
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + refreshExpirationMs))
-                .signWith(getRefreshKey(), SignatureAlgorithm.HS256)
-                .compact();
+        return buildToken(username, refreshExpirationMs, refreshSecret);
     }
 
     public boolean validateAccessToken(String token) {
-        return validateToken(token, getAccessKey());
+        return validate(token, accessSecret);
     }
 
     public boolean validateRefreshToken(String token) {
-        return validateToken(token, getRefreshKey());
+        return validate(token, refreshSecret);
     }
 
-    private boolean validateToken(String token, Key key) {
+    public String extractUsernameFromAccessToken(String token) {
+        return extractUsername(token, accessSecret);
+    }
+
+    public String extractUsernameFromRefreshToken(String token) {
+        return extractUsername(token, refreshSecret);
+    }
+
+    private String buildToken(String subject, long ttlMs, String secret) {
+        Key key = Keys.hmacShaKeyFor(secret.getBytes());
+        Date now = new Date();
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + ttlMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private boolean validate(String token, String secret) {
         try {
+            Key key = Keys.hmacShaKeyFor(secret.getBytes());
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            // log if you want: e.g. logger.warn("Invalid JWT: {}", e.getMessage());
             return false;
         }
     }
 
-    public String extractUsernameFromAccessToken(String token) {
-        return extractUsername(token, getAccessKey());
-    }
-
-    public String extractUsernameFromRefreshToken(String token) {
-        return extractUsername(token, getRefreshKey());
-    }
-
-    private String extractUsername(String token, Key key) {
+    private String extractUsername(String token, String secret) {
+        Key key = Keys.hmacShaKeyFor(secret.getBytes());
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

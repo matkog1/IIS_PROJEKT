@@ -5,6 +5,7 @@ import hr.algebra.validationservers.model.User;
 import hr.algebra.validationservers.repo.UserRepo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,6 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
-        // manually verify:
         return userRepo.findByUsername(req.getUsername())
                 .filter(u -> passwordEncoder.matches(req.getPassword(), u.getPassword()))
                 .map(u -> {
@@ -44,7 +44,7 @@ public class AuthenticationController {
                     String refresh = jwtUtil.generateRefreshToken(u.getUsername());
                     return ResponseEntity.ok(new AuthResponse(access, refresh));
                 })
-                .orElse(ResponseEntity.status(401).build());
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @PostMapping("/refresh")
